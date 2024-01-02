@@ -6,6 +6,9 @@ class Animal:
 
     def getAge(self):
         return self.birthDate - date()
+    
+    def pousseCri(self):
+        print('cri')
         
 class Chat(Animal):
     def pousseCri(self):
