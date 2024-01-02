@@ -5,8 +5,6 @@ Created on Tue Jan  2 12:42:25 2024
 @author: sebay
 """
 
-import numpy as np
-import matplotlib.pyplot as plt
 import math
 
 def sin(x):
