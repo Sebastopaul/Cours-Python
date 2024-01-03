@@ -85,7 +85,7 @@ class Jeu:
         wdisk = self.poles[1].w + 80
         ydisk = self.poles[1].y + 35
         cdisk = "red"
-        
+
         #Le nombre de disque peut être modifié de 0 à 8
         self.nb_disks = int(input('Choisissez le nombre de disques. Merci de donner un nombre entre 2 et 8: '))
 
@@ -99,7 +99,6 @@ class Jeu:
             self.disks.insert(0, Disque(str(self.nb_disks - i), self.poles[1].x, ydisk, wdisk, hdisk, cdisk, self.canvas))
             ydisk -= 10
             wdisk -= 10
-
 
     def init_boutons(self):
         #Création d'une frame pour accueillir les boutons dans la fenêtre
@@ -186,7 +185,7 @@ class Jeu:
         #Pour chaque disque déjà placé sur la barre, on retire la taille d'une pièce à y
         for i in range(self.poles[self.disks[disk_index].pole].count):
             y -= self.disks[disk_index].h8
-        
+
         #On remplace les coordonnées du disque dans l'objet et sur le canvas, puis on l'ajoute au compte de la barre
         self.disks[disk_index].set_coords(self.poles[self.disks[disk_index].pole].x, y, self.disks[disk_index].pole, self.canvas)
         self.poles[self.disks[disk_index].pole].ajouter_disque(self.disks[disk_index])
@@ -278,12 +277,11 @@ class Jeu:
 
         #On lance la boucle principale
         self.boucle()
-    
+
     def lancer(self):
         #On lance la fenêtre
         self.window.mainloop()
-        
+
 #Si le script est lancé directement, on lance le jeu avec la fonction lancer()
 if __name__ == '__main__':
     Jeu().lancer()
-    
