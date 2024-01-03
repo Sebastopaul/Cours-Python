@@ -31,7 +31,49 @@ class Labyrinthe:
             print(self.grid[i])
 
     def generate_paths(self, i, j):
+        paths = self.find_paths(i, j)
         
+        while (paths > 0):
+            inext, jnext = self.choose_path(i, j, paths)
+            self.break_wall(i, j, inext, jnext)
+            self.generate_paths(inext, jnext)
+            paths = self.find_paths(i, j)
+
+    def find_paths(self, i, j):
+        paths = 4
+        if i == self.h - 1 or (i != self.h - 1 and self.grid[i + 2][j] == 2):
+            paths -= 1
+        if i == 1 or (i != 1 and self.grid[i - 2][j] == 2):
+            paths -= 1
+        if j == self.w - 1 or (j != self.w - 1 and self.grid[i][j + 2] == 2):
+            paths -= 1
+        if j == 1 or (j != 1 and self.grid[i][j - 2] == 2):
+            paths -= 1
+        return paths
+
+    def choose_path(self, i, j, paths):
+        possible_paths = ['N', 'S', 'E', 'W']
+        if i == self.h - 1 or (i != self.h - 1 and self.grid[i + 2][j] == 2):
+            possible_paths.remove('E')
+        if i == 1 or (i != 1 and self.grid[i - 2][j] == 2):
+            possible_paths.remove('W')
+        if j == self.w - 1 or (j != self.w - 1 and self.grid[i][j + 2] == 2):
+            possible_paths.remove('S')
+        if j == 1 or (j != 1 and self.grid[i][j - 2] == 2):
+            possible_paths.remove('N')
+
+        rand = randint(1, paths)
+        if possible_paths[rand] == 'N':
+            return i, j - 2
+        if possible_paths[rand] == 'S':
+            return i, j + 2
+        if possible_paths[rand] == 'E':
+            return i + 2, j
+        if possible_paths[rand] == 'W':
+            return i - 2, j
+
+    def break_wall(self, i, j, inext, jnext):
+        return
 
 class Jeu:
     def __init__(self):
