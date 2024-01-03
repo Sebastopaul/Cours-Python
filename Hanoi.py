@@ -96,7 +96,7 @@ class Jeu:
         #Création des disques
         self.disks = []
         for i in range(self.nb_disks):
-            self.disks.insert(0, Disque(str(self.nb_disks), self.poles[1].x, ydisk, wdisk, hdisk, cdisk, self.canvas))
+            self.disks.insert(0, Disque(str(self.nb_disks - i), self.poles[1].x, ydisk, wdisk, hdisk, cdisk, self.canvas))
             ydisk -= 10
             wdisk -= 10
 
@@ -185,7 +185,7 @@ class Jeu:
         y = 135
         #Pour chaque disque déjà placé sur la barre, on retire la taille d'une pièce à y
         for i in range(self.poles[self.disks[disk_index].pole].count):
-            y -= self.disks[disk_index].h5
+            y -= self.disks[disk_index].h8
         
         #On remplace les coordonnées du disque dans l'objet et sur le canvas, puis on l'ajoute au compte de la barre
         self.disks[disk_index].set_coords(self.poles[self.disks[disk_index].pole].x, y, self.disks[disk_index].pole, self.canvas)
