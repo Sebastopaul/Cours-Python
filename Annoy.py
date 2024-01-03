@@ -6,7 +6,6 @@ Created on Tue Jan  2 15:49:30 2024
 """
 
 import tkinter as tk
-import time
 
 class Forme:
     def __init__(self, id, x, y, w, h, couleur, canvas):
@@ -74,24 +73,23 @@ class Jeu:
         cpole = "grey"
 
         #Création des barres pour le jeu, avec les dimensions établies
-        self.pole0 = Barre('1', 100, ypole, wpole, hpole, cpole, self.canvas)
-        self.pole1 = Barre('2', 200, ypole, wpole, hpole, cpole, self.canvas)
-        self.pole2 = Barre('3', 300, ypole, wpole, hpole, cpole, self.canvas)
+        self.poles = [
+            Barre('1', 100, ypole, wpole, hpole, cpole, self.canvas), 
+            Barre('2', 200, ypole, wpole, hpole, cpole, self.canvas),
+            Barre('3', 300, ypole, wpole, hpole, cpole, self.canvas),
+        ]
 
         #Réglage de la couleur et de la hauteur des disques
         hdisk = 10
         cdisk = "red"
 
         #Création des disques
-        self.disk0 = Disque('1', self.pole1.x, self.pole1.y + 5, self.pole1.w + 10, hdisk, cdisk, self.canvas)
-        self.disk1 = Disque('2', self.pole1.x, self.pole1.y + 15, self.pole1.w + 20, hdisk, cdisk, self.canvas)
-        self.disk2 = Disque('3', self.pole1.x, self.pole1.y + 25, self.pole1.w + 30, hdisk, cdisk, self.canvas)
-        self.disk3 = Disque('4', self.pole1.x, self.pole1.y + 35, self.pole1.w + 40, hdisk, cdisk, self.canvas)
-        
-        self.pole1.ajouter_disque(self.disk0)
-        self.pole1.ajouter_disque(self.disk1)
-        self.pole1.ajouter_disque(self.disk2)
-        self.pole1.ajouter_disque(self.disk3)
+        self.disks = [
+            Disque('1', self.poles[1].x, self.poles[1].y + 5, self.poles[1].w + 10, hdisk, cdisk, self.canvas),
+            Disque('2', self.poles[1].x, self.poles[1].y + 15, self.poles[1].w + 20, hdisk, cdisk, self.canvas),
+            Disque('3', self.poles[1].x, self.poles[1].y + 25, self.poles[1].w + 30, hdisk, cdisk, self.canvas),
+            Disque('4', self.poles[1].x, self.poles[1].y + 35, self.poles[1].w + 40, hdisk, cdisk, self.canvas),
+        ]
 
     def init_boutons(self):
         #Création d'une frame pour accueillir les boutons dans la fenêtre
@@ -118,7 +116,7 @@ class Jeu:
 
         #Création et placement du bouton quitter
         bouton_quitter = tk.Button(btnFrame, text = "Quitter", width = 20, command = self.window.destroy)
-        bouton_quitter.grid(row = 1, colum = 1, pady = 3)
+        bouton_quitter.grid(row = 1, column = 1, pady = 3)
 
     def choix_mouvement(self):
         return
@@ -127,13 +125,14 @@ class Jeu:
         return
 
     def test_fin(self):
-        if (self.pole0.count == 4 or self.pole1.count == 4 or self.pole2.count == 4):
+        if (self.poles[0].count == 4 or self.poles[1].count == 4 or self.poles[2].count == 4):
             self.launched = False
 
     def boucle(self):
         self.launched = True
 
         while (self.launched):
+            
             self.choix_mouvement()
             self.mouvement()
             self.test_fin()
@@ -141,29 +140,18 @@ class Jeu:
     def lancement_1(self):
         if (self.launched):
             return
-        
-        if (self.pole1.count > 0):
-            self.pole1.retirer_disque(self.disk0)
-            self.pole1.retirer_disque(self.disk1)
-            self.pole1.retirer_disque(self.disk2)
-            self.pole1.retirer_disque(self.disk3)
 
-        if (self.pole2.count > 0):
-            self.pole2.retirer_disque(self.disk0)
-            self.pole2.retirer_disque(self.disk1)
-            self.pole2.retirer_disque(self.disk2)
-            self.pole2.retirer_disque(self.disk3)
+        self.start_pole = self.poles[0]
 
-        if (self.pole0.count == 0):
-            self.disk0.set_coords(self.pole0.x, self.disk0.y, self.pole0, self.canvas)
-            self.disk1.set_coords(self.pole0.x, self.disk1.y, self.pole0, self.canvas)
-            self.disk2.set_coords(self.pole0.x, self.disk2.y, self.pole0, self.canvas)
-            self.disk3.set_coords(self.pole0.x, self.disk3.y, self.pole0, self.canvas)
-        
-            self.pole0.ajouter_disque(self.disk0)
-            self.pole0.ajouter_disque(self.disk1)
-            self.pole0.ajouter_disque(self.disk2)
-            self.pole0.ajouter_disque(self.disk3)
+        for i in range(1, 3, 1):
+            if (self.poles[i].count > 0):
+                for j in range(4):
+                    self.poles[i].retirer_disque(self.disks[j])
+
+        if (self.poles[0].count == 0):
+            for i in range(4):
+                self.disks[i].set_coords(self.poles[0].x, self.disks[i].y, self.poles[0], self.canvas)
+                self.poles[0].ajouter_disque(self.disks[i])
 
         print('Lancement du jeu depuis la barre 1')
 
@@ -173,28 +161,17 @@ class Jeu:
         if (self.launched):
             return
 
-        if (self.pole0.count > 0):
-            self.pole0.retirer_disque(self.disk0)
-            self.pole0.retirer_disque(self.disk1)
-            self.pole0.retirer_disque(self.disk2)
-            self.pole0.retirer_disque(self.disk3)
+        self.start_pole = self.poles[1]
 
-        if (self.pole2.count > 0):
-            self.pole2.retirer_disque(self.disk0)
-            self.pole2.retirer_disque(self.disk1)
-            self.pole2.retirer_disque(self.disk2)
-            self.pole2.retirer_disque(self.disk3)
+        for i in range(0, 3, 1):
+            if (i != 1 and self.poles[i].count > 0):
+                for j in range(4):
+                    self.poles[i].retirer_disque(self.disks[j])
 
-        if (self.pole1.count == 0):
-            self.disk0.set_coords(self.pole1.x, self.disk0.y, self.pole1, self.canvas)
-            self.disk1.set_coords(self.pole1.x, self.disk1.y, self.pole1, self.canvas)
-            self.disk2.set_coords(self.pole1.x, self.disk2.y, self.pole1, self.canvas)
-            self.disk3.set_coords(self.pole1.x, self.disk3.y, self.pole1, self.canvas)
-        
-            self.pole1.ajouter_disque(self.disk0)
-            self.pole1.ajouter_disque(self.disk1)
-            self.pole1.ajouter_disque(self.disk2)
-            self.pole1.ajouter_disque(self.disk3)
+        if (self.poles[1].count == 0):
+            for i in range(4):
+                self.disks[i].set_coords(self.poles[1].x, self.disks[i].y, self.poles[1], self.canvas)
+                self.poles[1].ajouter_disque(self.disks[i])
 
         print('Lancement du jeu depuis la barre 2')
 
@@ -204,28 +181,17 @@ class Jeu:
         if (self.launched):
             return
 
-        if (self.pole0.count > 0):
-            self.pole0.retirer_disque(self.disk0)
-            self.pole0.retirer_disque(self.disk1)
-            self.pole0.retirer_disque(self.disk2)
-            self.pole0.retirer_disque(self.disk3)
+        self.start_pole = self.poles[2]
 
-        if (self.pole1.count > 0):
-            self.pole1.retirer_disque(self.disk0)
-            self.pole1.retirer_disque(self.disk1)
-            self.pole1.retirer_disque(self.disk2)
-            self.pole1.retirer_disque(self.disk3)
+        for i in range(0, 2, 1):
+            if (self.poles[i].count > 0):
+                for j in range(4):
+                    self.poles[i].retirer_disque(self.disks[j])
 
-        if (self.pole2.count == 0):
-            self.disk0.set_coords(self.pole2.x, self.disk0.y, self.pole2, self.canvas)
-            self.disk1.set_coords(self.pole2.x, self.disk1.y, self.pole2, self.canvas)
-            self.disk2.set_coords(self.pole2.x, self.disk2.y, self.pole2, self.canvas)
-            self.disk3.set_coords(self.pole2.x, self.disk3.y, self.pole2, self.canvas)
-
-            self.pole2.ajouter_disque(self.disk0)
-            self.pole2.ajouter_disque(self.disk1)
-            self.pole2.ajouter_disque(self.disk2)
-            self.pole2.ajouter_disque(self.disk3)
+        if (self.poles[2].count == 0):
+            for i in range(4):
+                self.disks[i].set_coords(self.poles[2].x, self.disks[i].y, self.poles[2], self.canvas)
+                self.poles[2].ajouter_disque(self.disks[i])
 
         print('Lancement du jeu depuis la barre 3')
 
