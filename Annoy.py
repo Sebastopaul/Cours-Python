@@ -103,7 +103,7 @@ class Jeu:
         btnFrame.columnconfigure(0, weight = 1)
         btnFrame.columnconfigure(1, weight = 1)
         btnFrame.columnconfigure(2, weight = 1)
-        btnFrame.rowconfigure(0, weigh t= 1)
+        btnFrame.rowconfigure(0, weight = 1)
         btnFrame.rowconfigure(1, weight = 1)
 
         #Création de 3 bouton, chacun lançant le jeu depuis une barre différente
