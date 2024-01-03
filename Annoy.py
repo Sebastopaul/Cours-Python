@@ -6,51 +6,103 @@ Created on Tue Jan  2 15:49:30 2024
 """
 
 import tkinter as tk
+import time
 
-launched = False
+class Forme:
+    def __init__(self, x, y, w, h, couleur, canva):
+        #Réglage des dimensions, couleur et positions centrales de la forme
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+        self.couleur = couleur
+        
+        #Création de la forme
+        canva.create_rectangle(self.x - self.w / 2, self.y - self.h / 2, self.x + self.w / 2, self.y + self.h / 2, width = 2, fill = couleur)
+        
+    #Getters pour les données nécessaires de la forme
+    def get_x(self):
+        return self.x
+    
+    def get_y(self):
+        return self.y
+    
+    def get_width(self):
+        return self.w
+    
+    def get_height(self):
+        return self.h
 
-largeur = 400
-hauteur = 200
-fenetre = tk.Tk()
+class Jeu:
+    def __init__(self):
+        #Variable servant à savoir si le jeu est lancé ou non
+        self.launched = False
 
-widget = tk.Canvas(fenetre,width = largeur, height = hauteur, background = "white")
-widget.pack(fill = "both",expand = True)
+        #Réglage des dimensions du canva
+        self.wwin = 400
+        self.hwin = 200
+        #Création de la fenêtre
+        self.window = tk.Tk()
 
-btnFrame = tk.Frame()
-btnFrame.pack(side = 'bottom', fill = 'x')
+        #Création du canva dans la fenêtre avec les dimensions définies
+        self.canvas = tk.Canvas(self.window, width = self.wwin, height = self.hwin, background = "white")
+        #Réglage de l'emplacement et de l'affichage du canva dans la fenêtre
+        self.canvas.pack(fill = "both", expand = True)
+        
+        #initialisation des boutons
+        self.init_boutons()
 
-px0, py0 = 100, 100
-px1, py1 = 200, 100
-px2, py2 = 300, 100
+        #Réglage des dimensions des barres, de leur position sur l'axe y et de leur couleur
+        wpole = 10
+        hpole = 75
+        ypole = 100
+        cpole = "grey"
 
-pole0 = widget.create_rectangle(px0,py0,px0+10,py0+50,width = 2,fill = "grey")
-pole1 = widget.create_rectangle(px1,py1,px1+10,py1+50,width = 2,fill = "grey")
-pole2 = widget.create_rectangle(px2,py2,px2+10,py2+50,width = 2,fill = "grey")
+        #Création des barres pour le jeu, avec les dimensions établies
+        self.pole0 = Forme(125, ypole, wpole, hpole, cpole, self.canvas)
+        self.pole1 = Forme(225, ypole, wpole, hpole, cpole, self.canvas)
+        self.pole2 = Forme(325, ypole, wpole, hpole, cpole, self.canvas)
 
-def launch_1():
-    return
+    def init_boutons(self):
+        #Création d'une frame pour accueillir les boutons dans la fenêtre
+        btnFrame = tk.Frame()
+        #Réglage de l'emplacement de la fenêtre
+        btnFrame.pack(side = 'bottom', fill = 'x')
 
-def launch_2():
-    return
+        #Création de 3 colonnes et 2 lignes pour accueillir les boutons pour lancer le jeu et le quitter
+        btnFrame.columnconfigure(0, weight=1)
+        btnFrame.columnconfigure(1, weight=1)
+        btnFrame.columnconfigure(2, weight=1)
+        btnFrame.rowconfigure(0, weight=1)
+        btnFrame.rowconfigure(1, weight=1)
+        
+        #Création de 3 bouton, chacun lançant le jeu depuis une barre différente
+        btn1 = tk.Button(btnFrame,text = "1", width = 5, command = self.lancement_1)
+        btn2 = tk.Button(btnFrame,text = "2", width = 5, command = self.lancement_2)
+        btn3 = tk.Button(btnFrame,text = "3", width = 5, command = self.lancement_3)
 
-def launch_3():
-    return
+        #Placement des boutons sur la frame selon la grille établie plus tôt
+        btn1.grid(row=0, column=0, pady = 3, padx = 50, sticky='W')
+        btn2.grid(row=0, column=1, pady = 3, padx = 3)
+        btn3.grid(row=0, column=2, pady = 3, padx = 50, sticky='E')
 
-btn1 = tk.Button(btnFrame,text = "1", width = 5, command = launch_1)
-btn2 = tk.Button(btnFrame,text = "2", width = 5, command = launch_2)
-btn3 = tk.Button(btnFrame,text = "3", width = 5, command = launch_3)
+        #Création et placement du bouton quitter
+        bouton_quitter = tk.Button(btnFrame,text = "Quitter", width = 20, command=self.window.destroy)
+        bouton_quitter.grid(row=1, column=1, pady = 3)
+    
+    def lancement_1(self):
+        return
+    
+    def lancement_2(self):
+        return
+    
+    def lancement_3(self):
+        return
+    
+    def boucle(self):
+        self.window.mainloop()
+        
 
-btnFrame.columnconfigure(0, weight=1)
-btnFrame.columnconfigure(1, weight=1)
-btnFrame.columnconfigure(2, weight=1)
-btnFrame.rowconfigure(0, weight=1)
-btnFrame.rowconfigure(1, weight=1)
-
-btn1.grid(row=0, column=0, pady = 3, padx = 50, sticky='W')
-btn2.grid(row=0, column=1, pady = 3, padx = 3)
-btn3.grid(row=0, column=2, pady = 3, padx = 50, sticky='E')
-
-bouton_quitter = tk.Button(btnFrame,text = "Quitter", width = 20, command=fenetre.destroy)
-bouton_quitter.grid(row=1, column=1, pady = 3)
-
-fenetre.mainloop()
+if __name__ == '__main__':
+    Jeu().boucle()
+    
