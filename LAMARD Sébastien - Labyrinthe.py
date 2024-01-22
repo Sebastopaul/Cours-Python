@@ -44,17 +44,8 @@ class Labyrinthe:
                     self.grid[i].append(0)
                 else:
                     self.grid[i].append(1)
-
         #On génère un passage dans la grille créée en retirant des murs au fur et à mesure
-        #On donne la case devant l'entrée comme paramètre de départ
-        if self.startx == 0 and self.starty == 0:
-            self.generate_paths(self.starty + 1, self.startx + 1)
-        elif self.startx == 0:
-            self.generate_paths(self.starty, self.startx + 1)
-        elif self.starty == 0:
-            self.generate_paths(self.starty + 1, self.startx)
-        else:
-            raise Exception('Start generation issue')
+        self.generate_paths(1, 1)
 
         #On affiche la grille du labyrinthe sous forme logique (liste de liste avec l'état logique des cases : 0 = mur, 1 = entrée/sortie, 2 = vide)
         for i in range(self.h + 1):
